@@ -15,7 +15,7 @@ sdk.service((err, flex) => {
         if (context.entityId) {
             url = `${url}/${context.entityId}`;
         }
-        
+        console.log("About to make call to GH API: " + url);
         request.get(url, options, (err, response, body) => {
             if (!err && response.statusCode == 200) {
                 try {
@@ -25,6 +25,7 @@ sdk.service((err, flex) => {
                     return complete().setBody("Error parsing GH API json").runtimeError().next();
                 }
             } else {
+                console.log(err);
                 return complete().setBody("Error hitting GH API for license list: " + response.statusCode).runtimeError().next();
             }
         });
@@ -34,4 +35,6 @@ sdk.service((err, flex) => {
     const gh_licenses = flex.data.serviceObject('gh_licenses');
     gh_licenses.onGetAll(getAllOrOneGHLicense);
     gh_licenses.onGetById(getAllOrOneGHLicense);
+
+
 });
