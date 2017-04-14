@@ -1,0 +1,13 @@
+{
+  "name": "my-awesome-flex-service",
+  "version": "0.0.1",
+  "description": "Flex service to validate FSR for a new instance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shubhang Mani <shubhang@kinvey.com>",
+  "dependencies": {
+    "kinvey-flex-sdk": "^2.0.3"
+  }
+}
