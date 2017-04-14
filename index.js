@@ -3,6 +3,8 @@ const sdk = require('kinvey-flex-sdk'),
 
 // sdk.service({"sharedSecret": "gabbagabbahey"}, (err, flex) => {
 sdk.service((err, flex) => {    
+    
+    // Flex Data Sample
     function getAllOrOneGHLicense(context, complete, modules) {
         const options = {
             headers: {
@@ -36,5 +38,17 @@ sdk.service((err, flex) => {
     gh_licenses.onGetAll(getAllOrOneGHLicense);
     gh_licenses.onGetById(getAllOrOneGHLicense);
 
+    // Flex Function Sample
+    function getRedLineSchedule(context, complete, modules) {
+    request.get('http://developer.mbta.com/Data/Red.json', (err, response, body) => {
+      // if error, return an error
+      if (err) {
+        return complete().setBody("Could not complete request").runtimeError().done();
+      }
+      //otherwise, return the results
+      return complete().setBody(body).ok().done();
+    });
+   }
 
+   flex.functions.register('getMBTARedLineSchedule', getRedLineSchedule);
 });
