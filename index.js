@@ -2,8 +2,8 @@ const sdk = require('kinvey-flex-sdk'),
       request = require('request');
 
 // sdk.service({"sharedSecret": "gabbagabbahey"}, (err, flex) => {
-sdk.service((err, flex) => {    
-    
+sdk.service((err, flex) => {
+
     // Flex Data Sample
     function getAllOrOneGHLicense(context, complete, modules) {
         const options = {
@@ -11,7 +11,7 @@ sdk.service((err, flex) => {
                 "User-Agent": "request",
                 "Accept": "application/vnd.github.drax-preview+json"
             }
-        };  
+        };
 
         let url = "https://api.github.com/licenses";
         if (context.entityId) {
@@ -40,15 +40,20 @@ sdk.service((err, flex) => {
 
     // Flex Function Sample
     function getRedLineSchedule(context, complete, modules) {
-    request.get('http://developer.mbta.com/Data/Red.json', (err, response, body) => {
-      // if error, return an error
-      if (err) {
-        return complete().setBody("Could not complete request").runtimeError().done();
-      }
-      //otherwise, return the results
-      return complete().setBody(body).ok().done();
-    });
-   }
+        // Switching to use the new MBTA API
+        request.get({
+            uri: 'https://api-v3.mbta.com/schedules',
+            qs: { 'filter[route]': 'Red' },
+            headers: { 'Accept': 'application/vnd.api+json' }
+        }, (err, response, body) => {
+            // if error, return an error
+            if (err) {
+                return complete().setBody("Could not complete request").runtimeError().done();
+            }
+            //otherwise, return the results
+            return complete().setBody(body).ok().done();
+        });
+    }
 
-   flex.functions.register('getMBTARedLineSchedule', getRedLineSchedule);
+    flex.functions.register('getMBTARedLineSchedule', getRedLineSchedule);
 });
